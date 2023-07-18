@@ -1,0 +1,18 @@
+[project]
+name = "spdb"
+version = "1.1.0"
+authors = [
+  { name="Mrybs", email="mrybs2@gmail.com" },
+]
+description = "Sassy Python Database (and auth) utils"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/mrybs/spdb"
+"Bug Tracker" = "https://github.com/mrybs/spdb/issues"
