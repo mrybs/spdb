@@ -64,7 +64,9 @@ class Database:
 		try:
 			return Class.fromJSON(JSON)
 		except NameError:
-			return dict_to_object(Class, JSON)
+			return Database.dict_to_object(Class, JSON)
+		except KeyError:
+			return Database.dict_to_object(Class, JSON)
 
 
 	def read_json(self, name: str, data_id: str) -> dict:

@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='spdb',
-	  version='1.1.0',
+	  version='1.1.3',
 	  description='Sassy Python Databases utils',
 	  packages=['spdb'],
 	  author_email='mrybs2@gmail.com',
