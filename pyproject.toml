@@ -1,6 +1,6 @@
 [project]
 name = "spdb"
-version = "2.1.1"
+version = "2.1.2"
 authors = [
   { name="Mrybs", email="mrybs2@gmail.com" },
 ]

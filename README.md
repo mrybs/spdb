@@ -19,7 +19,7 @@ LICENSE: The MIT License
 ### Database
 
 ---
-	spdb.Database.__init__(path: str)  # Create Database object
+	spdb.Database.__init__(path: str, logger: BaseLogger=BaseLogger(), database_type='sqlite3', encoding='UTF-8')  # Create Database object
 	spdb.Database.create_tables(tables_names: list[str]) -> None  # Create tables if not exists
 	spdb.Database.execute(code: str) -> str  # Execute database query
 	spdb.Database.get_columns(table_name: str)  -> list[str]  # Get columns from table
