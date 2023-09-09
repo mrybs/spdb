@@ -9,7 +9,8 @@ class TextValidator:
 		self.regexp = regexp
 
 
-	def check(self, text: REstr):
+	def check(self, text: str):
+		text: REstr = REstr.strOrREstr(text)
 		if not text.isMatches(self.regexp):
 			return False
 		if text.len() > self.max or text.len() < self.min:

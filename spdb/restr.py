@@ -1,9 +1,16 @@
 import re
 
 
+class REstr:...
+
 class REstr:
-	def __init__(self):
-		self.string: str = ''
+	def __init__(self, string: str|REstr=''):
+		if type(string) == REstr:
+			self.string: str = string.string
+		elif type(string) == str:
+			self.string: str = string
+		else:
+			self.convertFrom(string)
 
 
 	def replace(self, find: str, to: str):
@@ -38,7 +45,7 @@ class REstr:
 
 	def isMatches(self, find: str) -> bool:
 		find: REstr = REstr.strOrREstr(find)
-		return self.toReplaced(find, '') == ''
+		return self.toReplaced(find, '').isEmpty()
 
 
 	def matches(self, find: str) -> int:
@@ -55,12 +62,12 @@ class REstr:
 		self.string = string
 
 
-	def toStr(self) -> str:
-		return self.string
-
-
 	def len(self) -> int:
 		return len(self.string)
+
+
+	def isEmpty(self) -> bool:
+		return self.string == ''
 
 
 	def at(self, index):
@@ -76,8 +83,48 @@ class REstr:
 		return REstr()
 
 
-	def join(self, array: list):
-		return REstr.fromStr(self.string.join(array))
+	def join(self, lst: list):
+		return REstr.fromStr(self.string.join(lst))
+
+
+	def join_to_begins(self, lst: list):
+		for l in lst:
+			yield self.string + REstr.strOrREstr(l).string
+
+
+	def join_to_ends(self, lst: list):
+		for l in lst:
+			yield REstr.strOrREstr(l).string + self.string
+
+
+	def join_boths(self, lst: list):
+		for l in lst:
+			yield self.string + self.REstr.strOrREstr(l).string + self.string
+
+
+	def split(self, D=[' ','\n','\r','\t']):
+		return re.split('|'.join(map(re.escape, D)))
+
+
+	def splits(string: str, delimeters: list[str]=[' ', '\n'], quotes: list[str]=[]):
+		result = [REstr()]
+		current_quote = ''
+		for char in str(string):
+			if char in quotes:
+				if current_quote == '':
+					current_quote = char
+					continue
+				elif current_quote == char:
+					current_quote = ''
+					continue
+			if current_quote == '':
+				if char in delimeters:
+					result.append(REstr())
+				else:
+					result[-1].string += char
+			else:
+				result[-1].string += char
+		return result
 
 
 	def convertFrom(self, var):
@@ -86,6 +133,57 @@ class REstr:
 
 	def convertTo(self, Class):
 		return Class(self.string)
+
+
+	def load(self, path: str):
+		self.string = REstr.read(path).toStr()
+		return self
+
+
+	def save(self, path: str) -> bool:
+		return REstr.write(path, self)
+
+
+	def __str__(self):
+		return self.string
+
+
+	def __int__(self):
+		return int(self.string)
+
+
+	def __float(self):
+		return float(self.string)
+
+	def __bool__(self):
+		return bool(self.string)
+
+	def __add__(self, other):
+		return self.string + str(other)
+
+	def __iadd__(self, other):
+		self.string += str(other)
+		return self.string
+
+	def __mul__(self, other):
+		if type(other) == int or type(other) == float:
+			return self.string * int(other)
+		return self.string * len(str(other))
+
+	def __imul__(self, other):
+		if type(other) == int or type(other) == float:
+			self.string *= int(other)
+		else:
+			self.string *= len(str(other))
+		return self.string
+
+
+	def __set__(self, instance, value):
+		self.string = str(value)
+
+
+	def __len__(self):
+		return len(self.string)
 
 
 	@staticmethod
@@ -98,7 +196,25 @@ class REstr:
 
 
 	@staticmethod
-	def fromStr(string: str):
-		restr = REstr()
-		restr.string = string
-		return restr
+	def read(path: str):
+		path = strOrREstr(path)
+		try:
+			file = open(path, 'r')
+			string = file.read()
+			file.close()
+		except Exception:
+			return False
+		return REstr.fromStr(string)
+
+
+	@staticmethod
+	def write(path: str, string: str):
+		path = REstr.strOrREstr(path)
+		string = REstr.strOrREstr(string)
+		try:
+			file = open(path, 'w')
+			file.write(string.string)
+			file.close()
+		except Exception:
+			return False
+		return True
