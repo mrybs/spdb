@@ -12,7 +12,7 @@ class LogText:
 		self.text = text
 
 
-	def to_str(self):
+	def __str__(self):
 		return f'{self.type} at {self.time}: {self.text}'
 
 
@@ -37,7 +37,7 @@ class BaseLogger:
 class PrintLogger(BaseLogger):
 	def log(self, text: LogText):
 		if self.can_log(text.type):
-			print(text.to_str())
+			print(text)
 
 
 class FileLogger(BaseLogger):
@@ -50,6 +50,6 @@ class FileLogger(BaseLogger):
 	def log(self, text: LogText):
 		if self.can_log(text.type):
 			with open(self.path, 'a') as file:
-				file.write(text.to_str()+'\n')
+				file.write(str(text)+'\n')
 			if self.print:
-				print(text.to_str())
+				print(text)

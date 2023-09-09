@@ -145,17 +145,14 @@ class Database:
 		self.write_json(name, object_id, Database.object_to_json(object))
 
 
-	def delete_dict(self, name: str, dict_id: str | list[str]):
-		if type(dict_id) != list:
-			dict_id = [dict_id]
-
-		for i in range(len(dict_id)):
-			dict_id[i] = str(dict_id[i])
-		self.execute(f'delete from {name} where {Database.merge_columns_and_data_ids(list(self.get_columns(name)),dict_id)}')
-
-
 	def delete_json(self, name: str, json_id: str | list[str]):
-		self.delete_dict(name, json_id)
+		if type(json_id) != list:
+			json_id = [json_id]
+
+		for i in range(len(json_id)):
+			json_id[i] = str(json_id[i])
+		self.execute(
+			f'delete from {name} where {Database.merge_columns_and_data_ids(list(self.get_columns(name)), json_id)}')
 
 
 	def delete_object(self, name: str, object_id: str | list[str]):

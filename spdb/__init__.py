@@ -1,3 +1,5 @@
+version = '2.1.3'
+
 from spdb.db import Database
 from spdb.token_generator import TokenGenerator
 from spdb.otp import OTP
